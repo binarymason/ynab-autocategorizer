@@ -2,7 +2,7 @@ import os
 import json
 import re
 import argparse
-import requests
+import base64
 from openai import OpenAI
 from ynab import (
     get_categories,
@@ -61,10 +61,20 @@ Account used: {transaction.get("account_name", "Unknown")}
 # ========== PAYEE MAP HANDLING ==========
 
 def load_payee_map():
-    if os.path.exists(PAYEE_MAP_FILE):
+    encoded = os.getenv("YNAB_PAYEE_MAP")
+    if encoded:
+        try:
+            decoded = base64.b64decode(encoded).decode("utf-8")
+            return json.loads(decoded)
+        except Exception as e:
+            print(f"❌ Failed to decode YNAB_PAYEE_MAP: {e}")
+            return []
+    elif os.path.exists(PAYEE_MAP_FILE):
         with open(PAYEE_MAP_FILE, "r") as f:
             return json.load(f)
-    return []
+    else:
+        print("⚠️ No payee_map.json found and YNAB_PAYEE_MAP is not set.")
+        return []
 
 def find_mapped_category(payee, payee_map):
     for entry in payee_map:
