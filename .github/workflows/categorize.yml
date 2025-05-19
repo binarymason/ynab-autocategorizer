@@ -2,7 +2,7 @@ name: Categorize YNAB Transactions
 
 on:
   schedule:
-    - cron: "0 * * * *" # every hour on the hour (UTC)
+    - cron: "0 */6 * * *" # every 6 hours on the hour
   workflow_dispatch: # allows manual runs from GitHub
 
 jobs:
