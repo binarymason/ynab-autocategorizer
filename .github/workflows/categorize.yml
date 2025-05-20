@@ -1,32 +1,32 @@
-# name: Categorize YNAB Transactions
-# 
-# on:
-#   schedule:
-#     - cron: "0 */6 * * *" # every 6 hours on the hour
-#   workflow_dispatch: # allows manual runs from GitHub
-# 
-# jobs:
-#   categorize:
-#     runs-on: ubuntu-latest
-# 
-#     steps:
-#       - name: Checkout repo
-#         uses: actions/checkout@v3
-# 
-#       - name: Set up Python
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: "3.11"
-# 
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install -r requirements.txt
-# 
-#       - name: Run categorize.py
-#         env:
-#           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-#           YNAB_API_TOKEN: ${{ secrets.YNAB_API_TOKEN }}
-#           YNAB_BUDGET_ID: ${{ secrets.YNAB_BUDGET_ID }}
-#           YNAB_PAYEE_MAP: ${{ secrets.YNAB_PAYEE_MAP }}
-#         run: python categorize.py $YNAB_BUDGET_ID
+name: Categorize YNAB Transactions
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours on the hour
+  workflow_dispatch: # allows manual runs from GitHub
+
+jobs:
+  categorize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run categorize.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          YNAB_API_TOKEN: ${{ secrets.YNAB_API_TOKEN }}
+          YNAB_BUDGET_ID: ${{ secrets.YNAB_BUDGET_ID }}
+          YNAB_PAYEE_MAP: ${{ secrets.YNAB_PAYEE_MAP }}
+        run: python categorize.py $YNAB_BUDGET_ID
